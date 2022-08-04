@@ -155,7 +155,6 @@ def main():
         else:
             imf = None
 
-
         # Check with user if they REALLY mean to run without saving anything 
         if not (args.train or args.train_size):
             saving_something = args.save_png or args.save_tif or args.save_flows or args.save_ncolor or args.save_txt
@@ -319,6 +318,7 @@ def main():
                                            channels=channels,
                                            save_path=os.path.realpath(args.dir), save_every=args.save_every,
                                            save_each=args.save_each,
+                                           save_flows=args.save_flows,
                                            n_epochs=args.n_epochs,
                                            batch_size=args.batch_size, 
                                            min_train_masks=args.min_train_masks)

@@ -685,7 +685,7 @@ class CellposeModel(UnetModel):
     def train(self, train_data, train_labels, train_files=None, 
               test_data=None, test_labels=None, test_files=None,
               channels=None, normalize=True, 
-              save_path=None, save_every=100, save_each=False,
+              save_path=None, save_every=100, save_each=False, save_flows=False,
               learning_rate=0.2, n_epochs=500, momentum=0.9, SGD=True,
               weight_decay=0.00001, batch_size=8, nimg_per_epoch=None,
               rescale=True, min_train_masks=5,
@@ -764,9 +764,9 @@ class CellposeModel(UnetModel):
                                                                                                    channels, normalize)
         # check if train_labels have flows
         # if not, flows computed, returned with labels as train_flows[i][0]
-        train_flows = dynamics.labels_to_flows(train_labels, files=train_files, use_gpu=self.gpu, device=self.device)
+        train_flows = dynamics.labels_to_flows(train_labels, files=train_files, use_gpu=self.gpu, device=self.device, save=save_flows)
         if run_test:
-            test_flows = dynamics.labels_to_flows(test_labels, files=test_files, use_gpu=self.gpu, device=self.device)
+            test_flows = dynamics.labels_to_flows(test_labels, files=test_files, use_gpu=self.gpu, device=self.device, save=save_flows)
         else:
             test_flows = None
 

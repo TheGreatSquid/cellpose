@@ -37,7 +37,7 @@ def logger_setup():
     except:
         print('creating new log file')
     logging.basicConfig(
-                    level=logging.INFO,
+                    level=logging.DEBUG,
                     format="%(asctime)s [%(levelname)s] %(message)s",
                     handlers=[
                         logging.FileHandler(log_file),
@@ -45,6 +45,7 @@ def logger_setup():
                     ]
                 )
     logger = logging.getLogger(__name__)
+    logger.info('CAUTION, CUSTOM CELLPOSE FORK!!')
     logger.info(f'WRITING LOG OUTPUT TO {log_file}')
     #logger.handlers[1].stream = sys.stdout
 
@@ -465,6 +466,7 @@ def save_masks(images, masks, flows, file_names, png=True, tif=False, channels=[
     
     # save RGB flow picture
     if masks.ndim < 3 and save_flows:
+        io_logger.debug('saving flows...')
         check_dir(flowdir)
         imsave(os.path.join(flowdir, basename + '_flows' + suffix + '.tif'), (flows[0]*(2**16 - 1)).astype(np.uint16))
         #save full flow data

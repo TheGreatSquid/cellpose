@@ -281,7 +281,7 @@ def masks_to_flows(masks, use_gpu=False, device=None):
     else:
         raise ValueError('masks_to_flows only takes 2D or 3D arrays')
 
-def labels_to_flows(labels, files=None, use_gpu=False, device=None, redo_flows=False):
+def labels_to_flows(labels, files=None, use_gpu=False, device=None, redo_flows=False, save=True):
     """ convert labels (list of masks or flows) to flows for training model 
 
     if files is not None, flows are saved to files to be reused
@@ -317,7 +317,8 @@ def labels_to_flows(labels, files=None, use_gpu=False, device=None, redo_flows=F
         # concatenate labels, distance transform, vector flows, heat (boundary and mask are computed in augmentations)
         flows = [np.concatenate((labels[n], labels[n]>0.5, veci[n]), axis=0).astype(np.float32)
                     for n in range(nimg)]
-        if files is not None:
+        if files is not None and save:
+            dynamics_logger.info('saving flows')
             for flow, file in zip(flows, files):
                 file_name = os.path.splitext(file)[0]
                 tifffile.imsave(file_name+'_flows.tif', flow)

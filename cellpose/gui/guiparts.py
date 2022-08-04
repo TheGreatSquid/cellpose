@@ -44,7 +44,7 @@ class ModelButton(QPushButton):
 class TrainWindow(QDialog):
     def __init__(self, parent, model_strings):
         super().__init__(parent)
-        self.setGeometry(100,100,900,350)
+        self.setGeometry(100, 100, 900, 500)
         self.setWindowTitle('train settings')
         self.win = QWidget(self)
         self.l0 = QGridLayout()
@@ -79,7 +79,7 @@ class TrainWindow(QDialog):
             self.l0.addWidget(self.ChannelChoose[i], yoff, 1,1,1)
 
         # choose parameters        
-        labels = ['learning_rate', 'weight_decay', 'n_epochs', 'model_name']
+        labels = ['learning_rate', 'weight_decay', 'n_epochs', 'model_name', 'batch_size']
         self.edits = []
         yoff += 1
         for i, label in enumerate(labels):
@@ -134,12 +134,14 @@ class TrainWindow(QDialog):
         for i in range(2):
             parent.ChannelChoose[i].setCurrentIndex(self.ChannelChoose[i].currentIndex())
         # set training params
-        parent.training_params = {'model_index': self.ModelChoose.currentIndex(),
-                                 'learning_rate': float(self.edits[0].text()), 
-                                 'weight_decay': float(self.edits[1].text()), 
-                                 'n_epochs':  int(self.edits[2].text()),
-                                 'model_name': self.edits[3].text()
-                                 }
+        parent.training_params = {
+            'model_index': self.ModelChoose.currentIndex(),
+            'learning_rate': float(self.edits[0].text()), 
+            'weight_decay': float(self.edits[1].text()), 
+            'n_epochs':  int(self.edits[2].text()),
+            'model_name': self.edits[3].text(),
+            'batch_size': int(self.edits[4].text()),
+        }
         self.done(1)
         
 def make_quadrants(parent, yp):

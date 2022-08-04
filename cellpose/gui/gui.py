@@ -249,6 +249,7 @@ class MainW(QMainWindow):
                                 'learning_rate': 0.1, 
                                 'weight_decay': 0.0001, 
                                 'n_epochs': 100,
+                                'batch_size': 8,
                                 'model_name': 'CP' + d.strftime("_%Y%m%d_%H%M%S")
                                }
 
@@ -1652,6 +1653,7 @@ class MainW(QMainWindow):
         save_path = os.path.dirname(self.filename)
         
         print('GUI_INFO: name of new model: ' + self.training_params['model_name'])
+        print(self.model)
         self.new_model_path = self.model.train(self.train_data, self.train_labels, 
                                                channels=self.channels, 
                                                save_path=save_path, 
@@ -1659,6 +1661,7 @@ class MainW(QMainWindow):
                                                learning_rate = self.training_params['learning_rate'], 
                                                weight_decay = self.training_params['weight_decay'], 
                                                n_epochs = self.training_params['n_epochs'],
+                                               batch_size=self.training_params['batch_size'],
                                                model_name = self.training_params['model_name'])
         diam_labels = self.model.diam_labels.copy()
         # run model on next image 
