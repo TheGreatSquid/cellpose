@@ -378,6 +378,24 @@ class MainW(QMainWindow):
         
         self.OCheckBox.setChecked(False)
         self.OCheckBox.toggled.connect(self.toggle_masks) 
+
+        # set mask opacity
+        b+=1
+        self.opacity = 128
+        label = QLabel('mask opacity (0-255) (press ENTER):')
+        label.setStyleSheet(label_style)
+        label.setFont(self.medfont)
+        label.setToolTip('you can set the mask opacity (0-255). 255 is fully opaque.\nYou can still toggle the masks with [X].')
+        self.l0.addWidget(label, b, 0,1,9)
+        self.MaskOpacity = QLineEdit()
+        self.MaskOpacity.setToolTip('you can set the mask opacity (0-255). 255 is fully opaque.\nYou can still toggle the masks with [X].')
+        self.MaskOpacity.setText(str(self.opacity))
+        self.MaskOpacity.setFont(self.medfont)
+        self.MaskOpacity.returnPressed.connect(self.compute_mask_opacity)
+        self.MaskOpacity.setFixedWidth(50)
+        b+=1
+        self.l0.addWidget(self.MaskOpacity, b,0,1,5)
+
         
         b+=1
         line = QHLine()
@@ -904,14 +922,9 @@ class MainW(QMainWindow):
             io._load_image(self, filename=files[0])
 
     def toggle_masks(self):
-        if self.MCheckBox.isChecked():
-            self.masksOn = True
-        else:
-            self.masksOn = False
-        if self.OCheckBox.isChecked():
-            self.outlinesOn = True
-        else:
-            self.outlinesOn = False
+        self.masksOn = self.MCheckBox.isChecked()
+        self.outlinesOn = self.OCheckBox.isChecked()
+
         if not self.masksOn and not self.outlinesOn:
             self.p0.removeItem(self.layer)
             self.layer_off = True
@@ -924,6 +937,11 @@ class MainW(QMainWindow):
             self.update_plot()
             self.update_layer()
 
+    def compute_mask_opacity(self):
+        opacity = int(self.MaskOpacity.text())
+        self.opacity = min(max(opacity, 0), 255)
+        self.draw_layer()
+        self.update_layer()
 
     def move_in_Z(self):
         if self.loaded:
