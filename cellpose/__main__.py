@@ -117,6 +117,8 @@ def main():
     training_args.add_argument('--save_every',
                         default=100, type=int, help='number of epochs to skip between saves. Default: %(default)s')
     training_args.add_argument('--save_each', action='store_true', help='save the model under a different filename per --save_every epoch for later comparsion')
+    training_args.add_argument('--model_name',
+                        default=None, type=str, help='name of file where resultant trained network is saved. Defaults to time-based string.')
     
     # misc settings
     parser.add_argument('--verbose', action='store_true', help='show information about running and settings and save to log')
@@ -321,7 +323,8 @@ def main():
                                            save_flows=args.save_flows,
                                            n_epochs=args.n_epochs,
                                            batch_size=args.batch_size, 
-                                           min_train_masks=args.min_train_masks)
+                                           min_train_masks=args.min_train_masks,
+                                           model_name=args.model_name)
                 model.pretrained_model = cpmodel_path
                 logger.info('>>>> model trained and saved to %s'%cpmodel_path)
 
