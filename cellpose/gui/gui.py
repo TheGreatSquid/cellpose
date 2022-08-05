@@ -1081,7 +1081,7 @@ class MainW(QMainWindow):
         self.SCheckBox.setEnabled(False)
 
         # -- zero out image stack -- #
-        self.opacity = 128 # how opaque masks should be
+        # self.opacity = 128 # how opaque masks should be; now is controlled through the GUI
         self.outcolor = [200,200,255,200]
         self.NZ, self.Ly, self.Lx = 1,512,512
         self.saturation = [[0,255] for n in range(self.NZ)]
